@@ -1,0 +1,99 @@
+modules = ["python-3.11"]
+
+[nix]
+channel = "stable-24_05"
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["sh", "-c", "streamlit run app.py --server.port 5000"]
+
+[workflows]
+runButton = "Kafka System"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Streamlit Server"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Kafka Producer"
+
+[[workflows.workflow]]
+name = "Streamlit Server"
+author = "agent"
+mode = "parallel"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "streamlit run app.py --server.port 5000"
+waitForPort = 5000
+
+[[workflows.workflow]]
+name = "Kafka Producer"
+author = "agent"
+mode = "sequential"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python kafka_producer.py"
+
+[[workflows.workflow]]
+name = "Kafka Consumer"
+mode = "sequential"
+author = 40242923
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python kafka_consumer_test.py"
+
+[[workflows.workflow]]
+name = "Kafka Server"
+author = 40242923
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python kafka_server.py"
+
+[[workflows.workflow]]
+name = "Steramlit app"
+mode = "sequential"
+author = 40242923
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "streamlit run app.py --server.port 5000"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[[ports]]
+localPort = 9292
+externalPort = 3000
