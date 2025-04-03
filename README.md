@@ -1,6 +1,10 @@
 
 # Streaming Camera Data Application
 
+This repository sets a secure and restricted traffic towards Kafka clusters server over this API: [Async Data Ingestor](https://github.com/caeltarifa/async_data_ingestor/).
+
+[Online URL](https://web-camera-data-ingestor.nicedesert-291b7b89.eastus.azurecontainerapps.io/)! 🟢 Try it again later if off.
+
 Docker configuration files for containerizing the data streaming of Camera Data Producer application.
 
 ## Files
