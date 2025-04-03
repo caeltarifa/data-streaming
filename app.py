@@ -21,7 +21,18 @@ def main():
 
     # Display application title
     st.title("Computer-Vision-Based Analytics")
+    
+    # Add container with API endpoint information
+    with st.sidebar:
+        st.header("API Information")
+        st.info("📤 Sending data to API endpoint:\n\n"
+                "`https://camera-data-ingestor.nicedesert-291b7b89.eastus.azurecontainerapps.io/ingest`\n\n"
+                "Click the Start buttons to begin sending random data every 15 seconds.")
 
+    # Create analytics section first and store in session state so other sections can access it
+    analytics_section = AnalyticsSection()
+    st.session_state.analytics_section = analytics_section
+    
     # Create and display each section
     input_section = InputSection()
     input_section.display()
@@ -29,7 +40,7 @@ def main():
     # Add a separator between sections
     st.markdown("---")
 
-    analytics_section = AnalyticsSection()
+    # Display the analytics section
     analytics_section.display()
 
     # Add a separator between sections
