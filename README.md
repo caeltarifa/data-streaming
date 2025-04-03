@@ -1,7 +1,7 @@
 
 # Streaming Camera Data Application
 
-Docker configuration files for containerizing the Camera Data Producer application.
+Docker configuration files for containerizing the data streaming of Camera Data Producer application.
 
 ## Files
 
