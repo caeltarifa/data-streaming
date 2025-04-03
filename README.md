@@ -1,5 +1,5 @@
 
-# Docker Setup for Streamlit Camera Data Application
+# Streaming Camera Data Application
 
 Docker configuration files for containerizing the Camera Data Producer application.
 
