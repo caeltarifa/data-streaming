@@ -115,6 +115,10 @@ class InputSection:
                                             "status": "success",
                                             "message": f"Data sent at {datetime.now().strftime('%H:%M:%S')} (sent {st.session_state.data_send_counter[button_key]} times)"
                                         }
+                                        
+                                        # Flag for UI update without force rerun
+                                        if "needs_update" not in st.session_state:
+                                            st.session_state.needs_update = True
                                     else:
                                         st.session_state.api_responses[button_key] = {
                                             "status": "error",
@@ -160,6 +164,10 @@ class InputSection:
                                             "status": "success",
                                             "message": f"Data sent at {datetime.now().strftime('%H:%M:%S')} (sent {st.session_state.data_send_counter[button_key]} times)"
                                         }
+                                        
+                                        # Mark that the UI needs to update - let the Streamlit refresh cycle handle it
+                                        if "needs_update" not in st.session_state:
+                                            st.session_state.needs_update = True
                                     else:
                                         st.toast(f"Error sending data: API returned {status_code}", icon="⚠️")
                                         st.session_state.api_responses[button_key] = {

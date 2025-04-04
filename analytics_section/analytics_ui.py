@@ -78,14 +78,21 @@ class AnalyticsSection:
         
         # Extract all ages from the logs
         all_ages = []
-        for entry in st.session_state.sent_data_log[-30:]:  # Use last 30 entries
+        for entry in st.session_state.sent_data_log[-50:]:  # Use last 50 entries
             try:
                 payload = json.loads(entry.get("payload", "{}"))
-                all_ages.extend(payload.get("ages", []))
-            except (json.JSONDecodeError, AttributeError):
+                # Extract ages from the people array
+                people = payload.get("people", [])
+                for person in people:
+                    if "age" in person:
+                        all_ages.append(person["age"])
+            except (json.JSONDecodeError, AttributeError, TypeError) as e:
+                print(f"Error processing entry: {e}")
                 continue
         
-        if not all_ages:
+        # Force refresh if we have no data 
+        if not all_ages and "needs_update" not in st.session_state:
+            st.session_state.needs_update = True
             return None
         
         # Create a dataframe with all ages
@@ -93,11 +100,11 @@ class AnalyticsSection:
         
         # Create an age distribution histogram
         chart = alt.Chart(data).mark_bar().encode(
-            alt.X("age:Q", bin=True, title="Age"),
+            alt.X("age:Q", bin=alt.Bin(maxbins=20), title="Age"),
             alt.Y("count()", title="Count"),
-            tooltip=["count()", alt.Tooltip("age:Q", bin=True)]
+            tooltip=["count()", alt.Tooltip("age:Q", bin=alt.Bin(maxbins=20))]
         ).properties(
-            title="Age Distribution of Detected Persons"
+            title=f"Age Distribution of Detected Persons (Total: {len(all_ages)})"
         ).interactive()
         
         return chart
@@ -124,10 +131,13 @@ class AnalyticsSection:
                     "person_count": payload.get("person_count", 0),
                     "timestamp": entry.get("timestamp", "")
                 })
-            except (json.JSONDecodeError, AttributeError):
+            except (json.JSONDecodeError, AttributeError, TypeError) as e:
+                print(f"Error processing count entry: {e}")
                 continue
         
-        if not device_data:
+        # Force refresh if we have no data 
+        if not device_data and "needs_update" not in st.session_state:
+            st.session_state.needs_update = True
             return None
         
         # Create a dataframe with the device data
@@ -143,7 +153,7 @@ class AnalyticsSection:
             color=alt.Color("company:N", title="Company"),
             tooltip=["device_id", "company", "person_count"]
         ).properties(
-            title="Average Person Count by Device"
+            title=f"Average Person Count by Device ({len(avg_counts)} devices)"
         ).interactive()
         
         return chart
@@ -164,12 +174,21 @@ class AnalyticsSection:
         for entry in st.session_state.sent_data_log[-10:]:
             try:
                 payload = json.loads(entry.get("payload", "{}"))
+                # Extract age data from people array
+                people = payload.get("people", [])
+                people_summary = ""
+                if people:
+                    # Create a short summary of the people data
+                    age_list = [person.get("age", "--") for person in people]
+                    gender_list = [person.get("gender", "--") for person in people]
+                    people_summary = f"Ages: {age_list}, Genders: {gender_list}"
+                
                 log_data.append({
                     "Timestamp": entry.get("timestamp", ""),
                     "Company": payload.get("company_name", ""),
                     "Device": payload.get("device_id", ""),
-                    "People": payload.get("person_count", 0),
-                    "Ages": str(payload.get("ages", []))
+                    "People Count": payload.get("person_count", 0),
+                    "People Data": people_summary
                 })
             except (json.JSONDecodeError, AttributeError):
                 continue
@@ -201,7 +220,7 @@ class AnalyticsSection:
             "status_code": status_code
         }
         
-        # Add to the beginning of the list
+        # Add to the list
         st.session_state.sent_data_log.append(entry)
         
         # Keep only the last 100 entries to avoid using too much memory
@@ -210,3 +229,6 @@ class AnalyticsSection:
         
         # Update the last update time
         st.session_state.last_data_update = time.time()
+        
+        # We're not using st.rerun() here as it causes issues with button interactions
+        # Instead, we'll let the natural Streamlit refresh cycle update the UI
