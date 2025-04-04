@@ -7,6 +7,11 @@ This repository sets a secure and restricted traffic towards Kafka clusters serv
 
 Docker configuration files for containerizing the data streaming of Camera Data Producer application.
 
+## Azure-architectured solution
+
+Scrum product ownership over data and software development life cycle:
+[Open diagram](https://github.com/user-attachments/assets/7e226f59-4bc3-429e-bb4c-f00e795a4366)
+
 ## Files
 
 - `docker-build.sh`: Script to build and run the Docker container
