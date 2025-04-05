@@ -1,11 +1,20 @@
 
 # Streaming Camera Data Application
 
-This repository sets a secure and restricted traffic towards Kafka clusters server over this API: [Async Data Ingestor](https://github.com/caeltarifa/async_data_ingestor/).
+This repository deploys a webapp which is broken down into 3 sections. Each:
+1. **sets** secure and restricted traffic towards Kafka clusters over [Async Data Ingestor API](https://github.com/caeltarifa/async_data_ingestor/).
+2. **establishes** a `WebSocket` connection by interface: [real-time analytics API]
+3. **serves** an AI agent as an assistant for further analytics retrieved from the first-section database: [agent interaction serving API]
 
-[Online URL](https://web-camera-data-ingestor.nicedesert-291b7b89.eastus.azurecontainerapps.io/)! 🟢 Try it again later if off.
+[Visit here 🟢!](https://web-camera-data-ingestor.nicedesert-291b7b89.eastus.azurecontainerapps.io/) Come back later if off.
 
-Docker configuration files for containerizing the data streaming of Camera Data Producer application.
+#### > DevOps + DataOps + MLOps
+Besides, here confluences **3** entities. `DevOps` (in charge of keeping the whole webapp online), `DataOps` (the handshake among extracting, transforming, and loading to an uninterrupted video data flow turning them into insights), and `MLOps` (which takes an LLM and serves it to the client, continuously fine-tuning the prompts for intuitive interaction) together make this project a window on how a business workload gets translated into an agile multidisciplinary setup (April 2025).
+
+## Azure-architectured solution
+
+Scrum product ownership over data and software development life cycle:
+[Open diagram](https://github.com/user-attachments/assets/7e226f59-4bc3-429e-bb4c-f00e795a4366)
 
 ## Files
 
