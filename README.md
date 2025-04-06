@@ -1,10 +1,10 @@
 
 # Streaming Camera Data Application
 
-This repository deploys a webapp which is broken down into 3 sections. Each:
-1. **sets** secure and restricted traffic towards Kafka clusters over [Async Data Ingestor API](https://github.com/caeltarifa/async_data_ingestor/).
-2. **establishes** a `WebSocket` connection by interface: [real-time analytics API]
-3. **serves** an AI agent as an assistant for further analytics retrieved from the first-section database: [agent interaction serving API]
+This repository deploys a webapp which is broken down into 3 sections spanned in repositories. Each:
+1. **sets** secure and restricted traffic towards Kafka clusters over [**Async Data Ingestor API**](https://github.com/caeltarifa/async_data_ingestor/).
+2. **establishes** a `WebSocket` connection by interface: [**real-time analytics API**]
+3. **serves** an AI agent as an assistant for further analytics retrieved from the first-section database: [**agent interaction serving API**]
 
 [Visit here 🟢!](https://web-camera-data-ingestor.nicedesert-291b7b89.eastus.azurecontainerapps.io/) Come back later if off.
 
