@@ -31,7 +31,7 @@ def main():
     with st.sidebar:
         st.header("API Information")
         st.info("📤 Sending data to API endpoint:\n\n"
-                "`https://camera-data-ingestor.nicedesert-291b7b89.eastus.azurecontainerapps.io/ingest`\n\n"
+                "`https://data-ingestor-api-mngr.azure-api.net/ingest`\n\n"
                 "Click the Start buttons to begin sending random data every 15 seconds.")
         
         # Add auto-refresh toggle
