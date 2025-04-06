@@ -26,7 +26,7 @@ class InputSection:
         self.companies = ["Company A", "Company B"]
         
         # API endpoint for data ingestion
-        self.api_endpoint = "https://camera-data-ingestor.nicedesert-291b7b89.eastus.azurecontainerapps.io/ingest"
+        self.api_endpoint = "https://data-ingestor-api-mngr.azure-api.net/ingest"
         
         # Initialize session state for tracking data collection status and API responses
         if "data_collection_active" not in st.session_state:
