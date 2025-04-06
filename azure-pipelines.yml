@@ -1,8 +1,3 @@
-# Python to Linux Web App on Azure
-# Build your Python project and deploy it to Azure as a Linux Web App.
-# Change python version to one thats appropriate for your application.
-# https://docs.microsoft.com/azure/devops/pipelines/languages/python
-
 trigger:
 - main
 
@@ -46,19 +41,6 @@ stages:
       workingDirectory: $(projectRoot)
       displayName: "Install requirements"
 
-    - task: ArchiveFiles@2
-      displayName: 'Archive files'
-      inputs:
-        rootFolderOrFile: '$(projectRoot)'
-        includeRootFolder: false
-        archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-        replaceExistingArchive: true
-
-    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-      displayName: 'Upload package'
-      artifact: drop
-
 - stage: Deploy
   displayName: 'Deploy Web App'
   dependsOn: Build
@@ -77,10 +59,10 @@ stages:
             inputs:
               versionSpec: '$(pythonVersion)'
             displayName: 'Use Python version'
-
-          - task: AzureWebApp@1
-            displayName: 'Deploy Azure Web App : '
+          - task: DockerCompose@1
             inputs:
-              azureSubscription: $(azureServiceConnectionId)
-              appName: $(webAppName)
-              package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
+              containerregistrytype: 'Azure Container Registry'
+              azureSubscription: 'Azure subscription 1 (d317ca60-85fc-43d4-8b5e-ebcc1fa216de)'
+              azureContainerRegistry: '{"loginServer":"analyticsrepository.azurecr.io", "id" : "/subscriptions/d317ca60-85fc-43d4-8b5e-ebcc1fa216de/resourceGroups/data-generator-RG/providers/Microsoft.ContainerRegistry/registries/analyticsrepository"}'
+              dockerComposeFile: '**/docker-compose.yml'
+              action: 'Run a Docker Compose command'
